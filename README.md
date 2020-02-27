@@ -1,4 +1,4 @@
-# Kraken
+# haskell-kraken-exchange-api
 
 Haskell bindings to the [Kraken](https://www.kraken.com/en-us/help/api) API. 
 
@@ -47,3 +47,7 @@ Early stage work in progress.
 * [ ] Items marked with a 'TBC' comment in code
 * [ ] Test optional PositionInfo on TradeHistory
 * [ ] TxnId -> RefId
+
+## Attribution
+
+This package is based on a package initially developed by [Chris Mahon](http://github.com/cmahon/kraken), we took over this library in December 2019, when he was so kind to change it's license to MIT.
