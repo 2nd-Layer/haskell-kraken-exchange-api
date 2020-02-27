@@ -1,11 +1,12 @@
-name: Docker image CI
+name: Docker CI
 
 on: [push, pull_request]
 
 jobs:
-  docker-build:
+  build:
     name: Build & Test Docker image
     runs-on: ubuntu-latest    
+
     steps:
       - uses: actions/checkout@v1
       - name: Create Docker tag
