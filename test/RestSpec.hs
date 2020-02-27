@@ -1,4 +1,4 @@
-module LibSpec where
+module RestSpec where
 
 import Test.Hspec
 import Test.Hspec.QuickCheck
