@@ -1,9 +1,9 @@
-module Kraken.Util where
+module KrakenExchange.Util where
 
 import           Data.Maybe (fromMaybe)
 import           System.Envy (decodeEnv)
 
-import           Kraken.Types (Config,EnvVars(EnvVars)
+import           KrakenExchange.Types (Config,EnvVars(EnvVars)
                               ,envvarsAPIKey,envvarsPrivateKeyB64,envvarsPassword
                               ,mkConfig)
 
