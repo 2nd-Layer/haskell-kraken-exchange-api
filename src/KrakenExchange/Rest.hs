@@ -1,4 +1,4 @@
-module Kraken.Rest where
+module KrakenExchange.Rest where
 
 import           Control.Monad.IO.Class (liftIO)
 import           Control.Monad.Trans.Class (lift)
@@ -23,7 +23,7 @@ import           Servant.API ((:<|>)(..),(:>)
 import           Servant.Client (ClientM,runClientM,client,ServantError,mkClientEnv
                                 ,BaseUrl(BaseUrl),Scheme(Https))
 
-import           Kraken.Types (TradeVolumeOptions
+import           KrakenExchange.Types (TradeVolumeOptions
                               ,QueryLedgers,QueryLedgersOptions
                               ,Ledgers,LedgersOptions
                               ,OpenPositionsOptions
@@ -71,10 +71,10 @@ restPort = 443
 -----------------------------------------------------------------------------
 
 -- type ServantT = ExceptT ServantError IO
-type KrakenT  = ReaderT Config ClientM
+type KrakenExchangeT  = ReaderT Config ClientM
 
-runKraken :: Config -> KrakenT a -> IO (Either ServantError a)
-runKraken cfg ka = do
+runKrakenExchange :: Config -> KrakenExchangeT a -> IO (Either ServantError a)
+runKrakenExchange cfg ka = do
     mgr <- newTlsManager
     let env = mkClientEnv mgr baseUrl
     flip runClientM env $ runReaderT ka cfg 
@@ -83,7 +83,7 @@ runKraken cfg ka = do
 
 -----------------------------------------------------------------------------
 
-type KrakenAPI             = TimeService
+type KrakenExchangeAPI     = TimeService
                         :<|> AssetService
                         :<|> AssetPairService
                         :<|> TickerService
@@ -148,7 +148,7 @@ type PrivateService
 
 -----------------------------------------------------------------------------
 
-api :: Proxy KrakenAPI
+api :: Proxy KrakenExchangeAPI
 api = Proxy
 
 -----------------------------------------------------------------------------
@@ -199,7 +199,7 @@ privateRequest :: ToForm a =>
                   String ->
                   a ->
                   (Maybe Text -> Maybe Text -> PrivateRequest a -> ClientM b) ->
-                  KrakenT b
+                  KrakenExchangeT b
 privateRequest url d f = do
   Config{..}       <- ask
   utcTime          <- liftIO getCurrentTime
@@ -217,91 +217,91 @@ privateRequest url d f = do
 
 -----------------------------------------------------------------------------
 
-time :: KrakenT Time
+time :: KrakenExchangeT Time
 time = lift $ time_ ()
 
-assets :: AssetOptions -> KrakenT Assets
+assets :: AssetOptions -> KrakenExchangeT Assets
 assets = lift . assets_
 
-assetPairs :: AssetPairOptions -> KrakenT AssetPairs
+assetPairs :: AssetPairOptions -> KrakenExchangeT AssetPairs
 assetPairs = lift . assetPairs_
 
-ticker :: TickerOptions -> KrakenT Ticker
+ticker :: TickerOptions -> KrakenExchangeT Ticker
 ticker = lift . ticker_
 
-ohlcs :: OHLCOptions -> KrakenT OHLCs
+ohlcs :: OHLCOptions -> KrakenExchangeT OHLCs
 ohlcs = lift . ohlcs_
 
-orderBook :: OrderBookOptions -> KrakenT OrderBook
+orderBook :: OrderBookOptions -> KrakenExchangeT OrderBook
 orderBook = lift . orderBook_
 
-trades :: TradesOptions -> KrakenT Trades
+trades :: TradesOptions -> KrakenExchangeT Trades
 trades = lift . trades_
 
-spreads :: SpreadOptions -> KrakenT Spreads
+spreads :: SpreadOptions -> KrakenExchangeT Spreads
 spreads = lift . spreads_
 
-balance :: KrakenT Balance
+balance :: KrakenExchangeT Balance
 balance = privateRequest 
   (show . safeLink api $ (Proxy :: Proxy BalanceService))
   ()
   balance_
 
-tradeBalance :: TradeBalanceOptions -> KrakenT TradeBalance
+tradeBalance :: TradeBalanceOptions -> KrakenExchangeT TradeBalance
 tradeBalance opts = privateRequest
   (show . safeLink api $ (Proxy :: Proxy TradeBalanceService))
   opts
   tradeBalance_
 
-openOrders :: OpenOrdersOptions -> KrakenT OpenOrders
+openOrders :: OpenOrdersOptions -> KrakenExchangeT OpenOrders
 openOrders opts = privateRequest
   (show . safeLink api $ (Proxy :: Proxy OpenOrdersService))
   opts
   openOrders_
 
-closedOrders :: ClosedOrdersOptions -> KrakenT ClosedOrders
+closedOrders :: ClosedOrdersOptions -> KrakenExchangeT ClosedOrders
 closedOrders opts = privateRequest
   (show . safeLink api $ (Proxy :: Proxy ClosedOrdersService))
   opts
   closedOrders_
 
-queryOrders :: QueryOrdersOptions -> KrakenT QueryOrders
+queryOrders :: QueryOrdersOptions -> KrakenExchangeT QueryOrders
 queryOrders opts = privateRequest
   (show . safeLink api $ (Proxy :: Proxy QueryOrdersService))
   opts
   queryOrders_
 
-tradesHistory :: TradesHistoryOptions -> KrakenT TradesHistory
+tradesHistory :: TradesHistoryOptions -> KrakenExchangeT TradesHistory
 tradesHistory opts = privateRequest
   (show . safeLink api $ (Proxy :: Proxy TradesHistoryService))
   opts
   tradesHistory_
 
-queryTrades :: QueryTradesOptions -> KrakenT QueryTrades
+queryTrades :: QueryTradesOptions -> KrakenExchangeT QueryTrades
 queryTrades opts = privateRequest
   (show . safeLink api $ (Proxy :: Proxy QueryTradesService))
   opts
   queryTrades_
 
-openPositions :: OpenPositionsOptions -> KrakenT Value
+openPositions :: OpenPositionsOptions -> KrakenExchangeT Value
 openPositions opts = privateRequest
   (show . safeLink api $ (Proxy :: Proxy OpenPositionsService))
   opts
   openPositions_
 
-ledgers :: LedgersOptions -> KrakenT Ledgers
+ledgers :: LedgersOptions -> KrakenExchangeT Ledgers
 ledgers opts = privateRequest
   (show . safeLink api $ (Proxy :: Proxy LedgersService))
   opts
   ledgers_
 
-queryLedgers :: QueryLedgersOptions -> KrakenT QueryLedgers
+queryLedgers :: QueryLedgersOptions -> KrakenExchangeT QueryLedgers
 queryLedgers opts = privateRequest
   (show . safeLink api $ (Proxy :: Proxy QueryLedgersService))
   opts
   queryLedgers_
 
-tradeVolume :: TradeVolumeOptions -> KrakenT Value
+tradeVolume :: TradeVolumeOptions -> KrakenExchangeT Value
 tradeVolume opts = privateRequest
   (show . safeLink api $ (Proxy :: Proxy TradeVolumeService))
   opts

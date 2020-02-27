@@ -1,4 +1,4 @@
-module Kraken.Parse where
+module KrakenExchange.Parse where
   
 import           Control.Applicative ((<|>))
 import           Data.Aeson (Value(Null),FromJSON

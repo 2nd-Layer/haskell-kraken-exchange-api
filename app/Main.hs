@@ -7,7 +7,7 @@ import Data.Default
 import Data.Text()
 import System.Exit
 
-import Kraken.API
+import KrakenExchange.API
 
 -----------------------------------------------------------------------------
 
@@ -16,7 +16,7 @@ main = getConfig >>= either (const exitFailure) run
   
 run :: Config -> IO ()
 run cfg = do
-  r <-  runKraken cfg $ do
+  r <-  runKrakenExchange cfg $ do
     -- io =<< time
     -- io =<< assets         (AssetOptions Currency [XXBT,XETH])
     -- io =<< assetPairs     (AssetPairOptions pairs)
@@ -40,7 +40,7 @@ run cfg = do
  
  where
 
-  io :: Show a => a -> KrakenT ()
+  io :: Show a => a -> KrakenExchangeT ()
   io t = liftIO $ print t >> putChar '\n' >> threadDelay 1000000
   
   xbtusd = AssetPair XXBT ZUSD

@@ -1,4 +1,4 @@
-module Kraken.Types where
+module KrakenExchange.Types where
 
 import           Control.Arrow (first)
 import           Control.Monad ((>=>),mzero,guard)
@@ -27,7 +27,7 @@ import           Lens.Micro ((&),over,_head)
 
 import           System.Envy (FromEnv(fromEnv),envMaybe)
 
-import           Kraken.Parse (parseResult,parseScientific
+import           KrakenExchange.Parse (parseResult,parseScientific
                               ,parseMaybeJustNull,parseMaybeNull)
 
 import           Web.HttpApiData (ToHttpApiData(toUrlPiece))

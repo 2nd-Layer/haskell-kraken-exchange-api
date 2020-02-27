@@ -1,13 +1,13 @@
-name:                kraken
+name:                kraken-exchange-api
 version:             0.1.0.0
 synopsis:            Kraken exchange API binding
 description:         Please see README.md
-homepage:            http://github.com/cmahon/kraken
-license:             BSD3
+homepage:            https://github.com/2nd-Layer/haskell-kraken-exchange-api
+license:             MIT
 license-file:        LICENSE
-author:              Chris Mahon
-maintainer:          cnmahon@gmail.com
-copyright:           Copyright (c) 2016 Chris Mahon
+author:              Mark Stopka
+maintainer:          mark.stopka@perlur.cloud
+copyright:           Copyright (c) 2020 PERLUR Group
 category:            tbc
 build-type:          Simple
 extra-source-files:  README.md
@@ -17,11 +17,11 @@ library
   default-language:    Haskell2010
   ghc-options:         -Wall -fno-warn-orphans
   hs-source-dirs:      src
-  exposed-modules:     Kraken.API
-                     , Kraken.Parse
-                     , Kraken.Rest
-                     , Kraken.Types
-                     , Kraken.Util
+  exposed-modules:     KrakenExchange.API
+                     , KrakenExchange.Parse
+                     , KrakenExchange.Rest
+                     , KrakenExchange.Types
+                     , KrakenExchange.Util
   build-depends:       aeson
                      , aeson-casing
                      , base >= 4.7 && < 5
@@ -63,7 +63,7 @@ executable kraken
   build-depends:       base
                      , bytestring
                      , data-default
-                     , kraken
+                     , kraken-exchange-api
                      , text
                      , transformers
   default-extensions:  OverloadedStrings
@@ -75,10 +75,10 @@ test-suite spec
   hs-source-dirs:      test
   main-is:             Spec.hs
   build-depends:       base
-                     , kraken
+                     , kraken-exchange-api
                      , hspec
                      , QuickCheck
                      
 source-repository head
   type:     git
-  location: https://github.com/cmahon/kraken
+  location: https://github.com/2nd-Layer/haskell-kraken-exchange-api
